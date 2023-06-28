@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+//added for testing
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Apply JavaScript example</title>
+
+  </head>
+  <body>
+    <button id="button">Click me</button>
+    <input type="text" id="input">
+    <label for="myfile">Select a file:</label>
+    <input type="file" id="myfile" name="myfile">
+    <p id="p"></p>
+  </body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+    const input = document.querySelector("#input")
+      const data = input.value
+      const p = document.getElementById("p")
+    let data_from_server = ''
+    function output(){
+
+      axios.get('http://127.0.0.1:888/')
+      .then((result) => {
+        console.log(result)
+        data_from_server = result.data
+        p.innerHTML = data_from_server 
+      }).catch((err) => {
+       console.log(err) 
+      });
+
+      
+  
+    }
+    const buttons = document.getElementById("button");
+    buttons.addEventListener("click",output)
+
+    const file = document.getElementById("myfile")
+    file.addEventListener("change",fileoutput)
+
+  function fileoutput(){
+      const data = file.files[0]
+      axios.post("http://127.0.0.1:888",data,{
+        headers: {
+          'Content-Type': file.type
+        }}).then((resp)=>{
+//          p.innerHTML = resp.data
+          console.log(resp.data)
+        })
+      console.log(data)
+    }
+  </script>
+
+</html>
