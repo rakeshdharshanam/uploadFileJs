@@ -1,0 +1,48 @@
+<html>
+<head>
+	<title>upload the file</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+<body>
+		<input type="file" name="filename" id="f"  />
+        <button id="b" >upload</button>
+        <p id="p"></p>
+        <script>
+           const reader = new FileReader()
+           const button = document.getElementById("b")
+           const file = document.getElementById("f") 
+           const p = document.getElementById("p")
+           file.addEventListener('change',upload)
+
+           function upload(e){
+            //console.log(e.target.value)
+            if (file.files[0]){
+                console.log("reading the file")
+
+                reader.readAsBinaryString(file.files[0])
+                reader.addEventListener('load',(e)=>{
+                    console.log(reader.result)
+                    axios.post('http://127.0.0.1:888/upload',{data:reader.result,name:"testimage"})
+                    .then((result) => {})
+                    .catch((err) => {
+                        console.log("file not found")
+                        });
+                })
+                
+
+
+                /*let fd = new FormData()
+                fd.append("file",file.files[0]);
+                
+                fetch('http://127.0.0.1:888/upload', {
+    method: "POST", 
+    body: fd
+  }); */
+                
+            }
+            else{console.log("no file selected")} 
+           }
+        </script>
+</body>
+</html>
